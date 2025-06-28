@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightmare Marksman</title>
+    <meta name="description" content="Experience Nightmare Marksman, a chilling horror shooter game online. Test your aim, survive terrifying levels, and become the ultimate marksman in this free FPS adventure.">
+    <meta name="keywords" content="nightmare marksman, horror shooter, online fps, scary shooting game, free shooter game, web fps, action horror, browser shooter, survival game, marksman challenge">
+    <style>
+        body {
+            background-image: url(background.png);
+            background-position: center;
+            background-attachment: fixed;
+            background-color: black;
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+
+        html {
+            height: 100%;
+            width: 100%;
+            cursor: url('cursor.png'), auto;
+        }
+
+        #enemy {
+            position: absolute;
+            left: 300px;
+            top: 300px;
+        }
+
+        #gameOverScreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+        }
+
+        #gameWinScreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+        }
+
+        #btn {
+            background-color: transparent;
+            color: yellowgreen;
+            border: none;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .bloodspot {
+
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            transform: translate(-50%, -50%);
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="float: left;">Level: <span id="currentLevelSpan">0</span>, Current Score : <span
+            id="currentScoreSpan">0</span></h1>
+    <h1 style="float: right;">Target Score : 25 <br><button id="btn" onclick="onBgMusic()">downKey for music</button>
+    </h1>
+    <img src="enemy.png" alt="enemy" id="enemy" onclick="changeEnemyPosition()">
+
+    <img src="evilGameOver.png" alt="gameOver" id="gameOverScreen">
+    <img src="Victory.png" alt="gameWin" id="gameWinScreen">
+    <img src="firespot.png" class="bloodspot">
+    <audio src="gunShot.mp3" id="gunShotSound"></audio>
+    <audio src="Victory.mp3" id="gameWinSound"></audio>
+    <audio src="gameOver.mp3" id="gameOverSound"></audio>
+    <audio src="evil-cue-111895.mp3" id="bgmSound" loop></audio>
+    <audio src="evilLAugh.mp3" id="evilLaughSound"></audio>
+    <audio src="possessed-laugh.mp3" id="possessedLaughSound"></audio>
+    <script>
+        // Game state variables
+        currentScore = -1;  // Tracks Score
+        currentLevel = 0;   // Tracks Level
+        enemyX = 300;      // Enemy position X
+        enemyY = 300;     // Enemy position Y
+        intRef = 0;       // Interval reference for enemy movement
+        let currentTime = 1500; // Time interval for enemy movement (ms)
+        const bloodSpot = document.querySelector(".bloodspot");
+        const gameOverScreen = document.getElementById("gameOverScreen");
+        const gameWinScreen = document.getElementById("gameWinScreen");
+        const enemy = document.getElementById("enemy");
+        const bgmSound = document.getElementById("bgmSound");
+
+        // Play background music after user interaction due to browser autoplay policy
+        document.addEventListener('keydown', function playBgmOnce() {
+            bgmSound.play();
+            document.removeEventListener('keydown', playBgmOnce);
+        });
+
+        // Show game over screen if user clicks anywhere except the enemy
+        document.addEventListener('click', function (event) {
+            if (!enemy.contains(event.target)) {
+                document.getElementById("gameOverSound").play();
+                gameOverScreen.style.display = 'block';
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
+        });
+
+        // Show blood spot and play gunshot sound on every click
+        window.addEventListener("click", (e) => {
+            document.getElementById("gunShotSound").volume = 0.25;
+            document.getElementById("gunShotSound").play();
+            bloodSpot.style.top = e.pageY + "px";
+            bloodSpot.style.left = e.pageX + "px";
+            bloodSpot.style.visibility = "visible";
+            setTimeout(() => {
+                bloodSpot.style.visibility = "hidden";
+            }, 200);
+        });
+
+        // Prevent enemy from spawning too close to the last position
+        function checkBoundary() {
+            if ((enemyX < currentX + 200 && enemyX > currentX - 200)
+                && (enemyY < currentY + 200 && enemyY > currentY - 200)) {
+                changeEnemyPosition();
+            }
+        }
+
+        let lastEvilLaughLevel = -1; // Keeps track of last level where laugh played
+
+        // Handles enemy movement, level progression, and win condition
+        function changeEnemyPosition() {
+            currentScore++;
+
+            // Level and speed progression
+            if (currentScore >= 0) {
+                currentLevel = 0;
+                document.getElementById("currentLevelSpan").innerHTML = currentLevel;
+                currentTime = 1500;
+            }
+            if (currentScore >= 5) {
+                currentLevel = 1;
+                currentTime = 1200;
+            }
+            if (currentScore >= 10) {
+                document.getElementsByTagName("body")[0].style.backgroundImage = "url('bg2.png')";
+                currentLevel = 2;
+                currentTime = 900;
+            }
+            if (currentScore >= 15) {
+                currentLevel = 3;
+                currentTime = 500;
+            }
+            if (currentScore >= 20) {
+                document.getElementsByTagName("body")[0].style.backgroundImage = "url('bg3.png')";
+                currentLevel = 4;
+                currentTime = 200;
+            }
+            if (currentScore >= 24) {
+                document.getElementById("possessedLaughSound").play();
+                currentLevel = 5;
+                currentTime = 10;
+            }
+
+            // Play evil laugh once per level
+            if (currentLevel !== lastEvilLaughLevel && currentLevel >= 1) {
+                document.getElementById("evilLaughSound").play();
+                lastEvilLaughLevel = currentLevel;
+            }
+
+            // Show win screen if target score is reached
+            if (currentScore == 25) {
+                document.getElementById("gameWinSound").play();
+                gameWinScreen.style.display = 'block';
+                setTimeout(() => {
+                    location.reload();
+                }, 5000);
+            }
+
+            // Update UI
+            document.getElementById("currentLevelSpan").innerHTML = currentLevel;
+            document.getElementById("currentScoreSpan").innerHTML = currentScore;
+
+            updateInterval();
+
+            // Move enemy to a random position
+            enemyX = parseInt(Math.random() * (screen.availWidth - 100));
+            enemyY = parseInt(Math.random() * (screen.availHeight - 100));
+            enemy.style.left = enemyX + "px";
+            enemy.style.top = enemyY + "px";
+            checkBoundary();
+        }
+
+        // Updates the interval for enemy movement based on current level
+        function updateInterval() {
+            clearInterval(intRef);
+            intRef = setInterval(() => {
+                currentScore--;
+                changeEnemyPosition();
+                document.getElementById("currentScoreSpan").innerHTML = currentScore;
+            }, currentTime);
+        }
+
+        changeEnemyPosition(); // Initial call to set enemy position
+    </script>
+</body>
+
+</html>
