@@ -78,17 +78,21 @@
             id="currentScoreSpan">0</span></h1>
     <h1 style="float: right;">Target Score : 25 <br><button id="btn" onclick="onBgMusic()">downKey for music</button>
     </h1>
+    
     <img src="enemy.png" alt="enemy" id="enemy" onclick="changeEnemyPosition()">
-
+    <img src="firespot.png" class="bloodspot">
+   
     <img src="evilGameOver.png" alt="gameOver" id="gameOverScreen">
     <img src="Victory.png" alt="gameWin" id="gameWinScreen">
-    <img src="firespot.png" class="bloodspot">
+   
     <audio src="gunShot.mp3" id="gunShotSound"></audio>
     <audio src="Victory.mp3" id="gameWinSound"></audio>
     <audio src="gameOver.mp3" id="gameOverSound"></audio>
     <audio src="evil-cue-111895.mp3" id="bgmSound" loop></audio>
     <audio src="evilLAugh.mp3" id="evilLaughSound"></audio>
     <audio src="possessed-laugh.mp3" id="possessedLaughSound"></audio>
+    <audio src="chaklaBaj.mp3" id="chaklaBajSound"></audio>
+
     <script>
         // Game state variables
         currentScore = -1;  // Tracks Score
@@ -172,6 +176,7 @@
             }
             if (currentScore >= 24) {
                 document.getElementById("possessedLaughSound").play();
+                document.getElementById("chaklaBajSound").play();
                 currentLevel = 5;
                 currentTime = 10;
             }
