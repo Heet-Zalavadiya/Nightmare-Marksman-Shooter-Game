@@ -65,12 +65,39 @@
         }
 
         .bloodspot {
-
             position: absolute;
             width: 50px;
             height: 50px;
             transform: translate(-50%, -50%);
             visibility: hidden;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 16px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            #enemy {
+                width: 50px;
+                height: 50px;
+            }
+
+            .bloodspot {
+                width: 30px;
+                height: 30px;
+            }
+
+            #gameOverScreen,
+            #gameWinScreen {
+                height: fit-content;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: black;
+                border-radius: 10px;
+                padding: 100%;
+            }
         }
     </style>
 </head>
@@ -113,6 +140,10 @@
         document.addEventListener('keydown', function playBgmOnce() {
             bgmSound.play();
             document.removeEventListener('keydown', playBgmOnce);
+        });
+         document.addEventListener('click', function playBgmOnce() {
+            bgmSound.play();
+            document.removeEventListener('click', playBgmOnce);
         });
 
         // Show game over screen if user clicks anywhere except the enemy
