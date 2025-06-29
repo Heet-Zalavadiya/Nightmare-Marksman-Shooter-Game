@@ -56,14 +56,6 @@
             z-index: 9999;
         }
 
-        #btn {
-            background-color: transparent;
-            color: yellowgreen;
-            border: none;
-            font-size: 10px;
-            cursor: pointer;
-        }
-
         .bloodspot {
             position: absolute;
             width: 50px;
@@ -105,8 +97,7 @@
 <body>
     <h1 style="float: left;">Level: <span id="currentLevelSpan">0</span>, Current Score : <span
             id="currentScoreSpan">0</span></h1>
-    <h1 style="float: right;">Target Score : 25 <br><button id="btn" onclick="onBgMusic()">downKey for music</button>
-    </h1>
+    <h1 style="float: right;">Target Score : 25 <br></h1>
 
     <img src="enemy.png" alt="enemy" id="enemy" onclick="changeEnemyPosition()">
     <img src="firespot.png" class="bloodspot">
@@ -141,7 +132,7 @@
             bgmSound.play();
             document.removeEventListener('keydown', playBgmOnce);
         });
-         document.addEventListener('click', function playBgmOnce() {
+        document.addEventListener('click', function playBgmOnce() {
             bgmSound.play();
             document.removeEventListener('click', playBgmOnce);
         });
