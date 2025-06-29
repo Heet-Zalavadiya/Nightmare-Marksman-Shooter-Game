@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightmare Marksman</title>
-    <meta name="description" content="Experience Nightmare Marksman, a chilling horror shooter game online. Test your aim, survive terrifying levels, and become the ultimate marksman in this free FPS adventure.">
-    <meta name="keywords" content="nightmare marksman, horror shooter, online fps, scary shooting game, free shooter game, web fps, action horror, browser shooter, survival game, marksman challenge">
+    <meta name="description"
+        content="Experience Nightmare Marksman, a chilling horror shooter game online. Test your aim, survive terrifying levels, and become the ultimate marksman in this free FPS adventure.">
+    <meta name="keywords"
+        content="nightmare marksman, horror shooter, online fps, scary shooting game, free shooter game, web fps, action horror, browser shooter, survival game, marksman challenge">
     <style>
         body {
             background-image: url(background.png);
@@ -78,13 +80,13 @@
             id="currentScoreSpan">0</span></h1>
     <h1 style="float: right;">Target Score : 25 <br><button id="btn" onclick="onBgMusic()">downKey for music</button>
     </h1>
-    
+
     <img src="enemy.png" alt="enemy" id="enemy" onclick="changeEnemyPosition()">
     <img src="firespot.png" class="bloodspot">
-   
+
     <img src="evilGameOver.png" alt="gameOver" id="gameOverScreen">
     <img src="Victory.png" alt="gameWin" id="gameWinScreen">
-   
+
     <audio src="gunShot.mp3" id="gunShotSound"></audio>
     <audio src="Victory.mp3" id="gameWinSound"></audio>
     <audio src="gameOver.mp3" id="gameOverSound"></audio>
@@ -117,6 +119,9 @@
         document.addEventListener('click', function (event) {
             if (!enemy.contains(event.target)) {
                 document.getElementById("gameOverSound").play();
+                setTimeout(() => {
+                    document.getElementById("chaklaBajSound").play();
+                }, 750);
                 gameOverScreen.style.display = 'block';
                 setTimeout(() => {
                     location.reload();
