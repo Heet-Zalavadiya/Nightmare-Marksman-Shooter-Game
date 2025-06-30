@@ -99,7 +99,7 @@
             id="currentScoreSpan">0</span></h1>
     <h1 style="float: right;">Target Score : 25 <br></h1>
 
-    <img src="enemy.png" alt="enemy" id="enemy" onclick="changeEnemyPosition()">
+    <img src="enemy.png" alt="enemy" id="enemy" onclick="changeEnemyPosition(event)">
     <img src="firespot.png" class="bloodspot">
 
     <img src="evilGameOver.png" alt="gameOver" id="gameOverScreen">
@@ -115,6 +115,8 @@
 
     <script>
         // Game state variables
+        currentX = 0;
+        currentY = 100;
         currentScore = -1;  // Tracks Score
         currentLevel = 0;   // Tracks Level
         enemyX = 300;      // Enemy position X
