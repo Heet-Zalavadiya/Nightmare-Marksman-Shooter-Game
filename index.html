@@ -114,11 +114,9 @@
 <body>
     <div class="top-bar">
         <h1>Level: <span id="currentLevelSpan">0</span>, Current Score : <span id="currentScoreSpan">0</span></h1>
-        <h1 style="float: right;">Target Score : 25 <br><button id="btn" onclick="onBgMusic()">downKey for
-                music</button>
-        </h1>
+        <h1 style="float: right;">Target Score : 25 <br></h1>
     </div>
-    <img src="enemy2.png" alt="enemy" id="enemy" height="150px" onclick="changeEnemyPosition()">
+    <img src="enemy.png" alt="enemy" id="enemy"  onclick="changeEnemyPosition()">
 
     <img src="evilGameOver.png" alt="gameOver" id="gameOverScreen">
     <img src="Victory.png" alt="gameWin" id="gameWinScreen">
@@ -130,7 +128,7 @@
     <audio src="evilLAugh.mp3" id="evilLaughSound"></audio>
     <audio src="possessed-laugh.mp3" id="possessedLaughSound"></audio>
     <audio src="chaklaBaj.mp3" id="chaklaBajSound"></audio>
-    <audio src="download (2).wav" id="gadhnoSound"></audio>
+
     <script>
         // Game state variables
         currentScore = -1;  // Tracks Score
@@ -145,10 +143,10 @@
         const enemy = document.getElementById("enemy");
         const bgmSound = document.getElementById("bgmSound");
 
-        // Play background music after user interaction due to browser autoplay policy
-        document.addEventListener('keydown', function playBgmOnce() {
+       
+        document.addEventListener('click', function playBgmOnce() {
             bgmSound.play();
-            document.removeEventListener('keydown', playBgmOnce);
+            document.removeEventListener('click', playBgmOnce);
         });
 
         // Show game over screen if user clicks anywhere except the enemy
