@@ -56,7 +56,16 @@
             z-index: 9999;
         }
 
+        #btn {
+            background-color: transparent;
+            color: yellowgreen;
+            border: none;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
         .bloodspot {
+
             position: absolute;
             width: 50px;
             height: 50px;
@@ -64,47 +73,56 @@
             visibility: hidden;
         }
 
+         .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100vw;
+            padding: 1vw 2vw;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .top-bar h1 {
+            font-size: 3vw;
+            margin: 0;
+            padding: 0;
+
+        }
+
         @media (max-width: 600px) {
-            h1 {
-                font-size: 16px;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            .top-bar h1 {
+                font-size: 3vw;
             }
 
             #enemy {
-                width: 50px;
-                height: 50px;
+                width: 18vw;
+                min-width: 30px;
             }
 
             .bloodspot {
-                width: 30px;
-                height: 30px;
-            }
-
-            #gameOverScreen,
-            #gameWinScreen {
-                height: fit-content;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: black;
-                border-radius: 10px;
-                padding: 100%;
+                width: 14vw;
+                min-width: 10px;
             }
         }
     </style>
 </head>
 
 <body>
-    <h1 style="float: left;">Level: <span id="currentLevelSpan">0</span>, Current Score : <span
-            id="currentScoreSpan">0</span></h1>
-    <h1 style="float: right;">Target Score : 25 <br></h1>
-
-    <img src="enemy.png" alt="enemy" id="enemy" onclick="changeEnemyPosition(event)">
-    <img src="firespot.png" class="bloodspot">
+    <div class="top-bar">
+        <h1>Level: <span id="currentLevelSpan">0</span>, Current Score : <span id="currentScoreSpan">0</span></h1>
+        <h1 style="float: right;">Target Score : 25 <br><button id="btn" onclick="onBgMusic()">downKey for
+                music</button>
+        </h1>
+    </div>
+    <img src="enemy2.png" alt="enemy" id="enemy" height="150px" onclick="changeEnemyPosition()">
 
     <img src="evilGameOver.png" alt="gameOver" id="gameOverScreen">
     <img src="Victory.png" alt="gameWin" id="gameWinScreen">
-
+    <img src="firespot.png" class="bloodspot">
     <audio src="gunShot.mp3" id="gunShotSound"></audio>
     <audio src="Victory.mp3" id="gameWinSound"></audio>
     <audio src="gameOver.mp3" id="gameOverSound"></audio>
@@ -112,11 +130,9 @@
     <audio src="evilLAugh.mp3" id="evilLaughSound"></audio>
     <audio src="possessed-laugh.mp3" id="possessedLaughSound"></audio>
     <audio src="chaklaBaj.mp3" id="chaklaBajSound"></audio>
-
+    <audio src="download (2).wav" id="gadhnoSound"></audio>
     <script>
         // Game state variables
-        currentX = 0;
-        currentY = 100;
         currentScore = -1;  // Tracks Score
         currentLevel = 0;   // Tracks Level
         enemyX = 300;      // Enemy position X
@@ -133,10 +149,6 @@
         document.addEventListener('keydown', function playBgmOnce() {
             bgmSound.play();
             document.removeEventListener('keydown', playBgmOnce);
-        });
-        document.addEventListener('click', function playBgmOnce() {
-            bgmSound.play();
-            document.removeEventListener('click', playBgmOnce);
         });
 
         // Show game over screen if user clicks anywhere except the enemy
@@ -204,6 +216,7 @@
                 currentTime = 200;
             }
             if (currentScore >= 24) {
+
                 document.getElementById("possessedLaughSound").play();
                 document.getElementById("chaklaBajSound").play();
                 currentLevel = 5;
@@ -218,6 +231,7 @@
 
             // Show win screen if target score is reached
             if (currentScore == 25) {
+
                 document.getElementById("gameWinSound").play();
                 gameWinScreen.style.display = 'block';
                 setTimeout(() => {
